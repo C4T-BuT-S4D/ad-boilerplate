@@ -37,6 +37,9 @@ jobs:
     - name: install requirements
       run: pip install -r requirements.txt
 
+    - name: install checkers requirements
+      run: pip install -r checkers/requirements.txt
+
     - name: validate service ${{ matrix.service }}
       run: ./check.py validate
       env:

@@ -15,6 +15,9 @@ jobs:
     - name: install requirements
       run: pip install -r requirements.txt
 
+    - name: install checkers requirements
+      run: pip install -r checkers/requirements.txt
+
     - name: list services
       run: ./check.py list
 

@@ -3,16 +3,58 @@ name: check-services
 on: [push]
 
 jobs:
-  check-service:
+  list-services:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: ["example"]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
       with:
         python-version: '3.9'
-    - name: test1
-      run: docker ps -a
+    - name: list services
+      run: ./check.py list
+
+  check-service:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        service: ["example"]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: validate service ${{ matrix.service }}
+      run: ./check.py validate
+      env:
+        SERVICE: ${{ matrix.service }}
+
+    - name: up service ${{ matrix.service }}
+      run: ./check.py up
+      env:
+        SERVICE: ${{ matrix.service }}
+
+    - name: wait for service ${{ matrix.service }}
+      run: sleep 30
+
+    - name: check service ${{ matrix.service }}
+      run: ./check.py check
+      env:
+        SERVICE: ${{ matrix.service }}
+        RUNS: 10
+
+    - name: down service ${{ matrix.service }}
+      run: ./check.py down
+      env:
+        SERVICE: ${{ matrix.service }}
+      if: ${{ always() }}
+
+    - name: logs after failure
+      run: ./check.py logs
+      if: ${{ failure() }}
+
+
 

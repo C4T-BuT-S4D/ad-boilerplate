@@ -8,6 +8,10 @@ from example_lib import *
 
 
 class Checker(BaseChecker):
+    vulns: int = 2
+    timeout: int = 5
+    uses_attack_data: bool = True
+
     def __init__(self, *args, **kwargs):
         super(Checker, self).__init__(*args, **kwargs)
         self.mch = CheckMachine(self)

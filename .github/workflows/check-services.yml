@@ -34,7 +34,8 @@ jobs:
 
     strategy:
       matrix:
-        service: ["example"]
+        service:
+        - example
 
     steps:
     - uses: actions/checkout@v2

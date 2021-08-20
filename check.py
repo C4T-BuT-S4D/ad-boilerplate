@@ -297,14 +297,14 @@ class StructureValidator(BaseValidator):
             with f.open() as file:
                 dc = yaml.safe_load(file)
 
-            if self._error(type(dc) == dict, f'{path} is not dict'):
+            if self._error(isinstance(dc, dict), f'{path} is not dict'):
                 return
 
             for opt in DC_REQUIRED_OPTIONS:
                 if self._error(opt in dc, f'required option {opt} not in {path}'):
                     return
 
-            if self._error(type(dc['version']) == str, f'version option in {path} is not string'):
+            if self._error(isinstance(dc['version'], str), f'version option in {path} is not string'):
                 return
 
             try:
@@ -329,11 +329,11 @@ class StructureValidator(BaseValidator):
             proxies = []
             dependencies = defaultdict(list)
 
-            if self._error(type(dc['services']) == dict, f'services option in {path} is not dict'):
+            if self._error(isinstance(dc['services'], dict), f'services option in {path} is not dict'):
                 return
 
             for container, container_conf in dc['services'].items():
-                if self._error(type(container_conf) == dict, f'config in {path} for container {container} is not dict'):
+                if self._error(isinstance(container_conf, dict), f'config in {path} for container {container} is not dict'):
                     continue
 
                 for opt in CONTAINER_REQUIRED_OPTIONS:
